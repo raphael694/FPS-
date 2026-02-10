@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FPS Combat Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; }
+        #loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-family: sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="loading">Miandrasa ny Tanàna ho vonona...</div>
+
+    <script type="importmap">
+        { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        // 1. Scene & Renderer
+        const scene = new THREE.Scene();
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.toneMapping = THREE.ReinhardToneMapping; // Manatsara ny loko
+        document.body.appendChild(renderer.domElement);
+
+        // 2. Camera FPS
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 1.6, 0);
+
+        // 3. Hazavana Realistic (Ambient + Directional)
+        const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambient);
+        const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+        sun.position.set(5, 10, 7.5);
+        scene.add(sun);
+
+        // 4. Loading ny Tanàna (Ohatra)
+        const loader = new GLTFLoader();
+        // Eto no soloinao ny rohin'ilay .glb nalainao tao amin'ny Sketchfab
+        // loader.load('assets/tanana.glb', (gltf) => {
+        //     scene.add(gltf.scene);
+        //     document.getElementById('loading').style.display = 'none';
+        // });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
